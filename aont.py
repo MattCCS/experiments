@@ -2,6 +2,8 @@
 All-Or-Nothing Transform experiments.
 """
 
+import hashlib
+
 
 K0 = 118  # public.
 K = 26  # random, masked within message package.
@@ -12,9 +14,19 @@ m = list(b'pretty cool!')
 print(bytearray(m), m)
 
 
-def E(k, p):
+def E1(k, p):
     # (Encryption function is arbitrary for our purposes.)
     return (p + k + 3) % 256
+
+
+def E2(k, p):
+    # (Less guessable version.)
+    sha = hashlib.sha256()
+    sha.update(bytes([k, p]))
+    return sha.digest()[0]
+
+
+E = E1
 
 
 def H(mi, i):
